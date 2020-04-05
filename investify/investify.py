@@ -6,7 +6,7 @@ import click
 from investing import Investing
 from sendtext import SendText
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 
 def run(
