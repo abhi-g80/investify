@@ -1,5 +1,5 @@
 import pytest
-from  investify.sendtext import SendText
+from investify.sendtext import SendText
 
 
 @pytest.fixture

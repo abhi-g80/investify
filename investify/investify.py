@@ -1,17 +1,21 @@
+import logging
 import sys
 import time
-import logging
 
 import click
-
-from sendtext import SendText
 from investing import Investing
-
+from sendtext import SendText
 
 __version__ = "0.0.1"
 
 
-def run(instrument: Investing, send_message: SendText, lower: float, upper: float, threshold: float) -> tuple:
+def run(
+    instrument: Investing,
+    send_message: SendText,
+    lower: float,
+    upper: float,
+    threshold: float,
+) -> tuple:
     instrument.fetch()
     logger.debug("Fetched page successfully.")
 
@@ -19,9 +23,7 @@ def run(instrument: Investing, send_message: SendText, lower: float, upper: floa
     logger.debug(f"Price of {instrument.name} is ${price}.")
 
     if price >= upper or price <= lower:
-        logger.info(
-            f"Price {price} breached price band [{lower}, {upper}]."
-        )
+        logger.info(f"Price {price} breached price band [{lower}, {upper}].")
         logger.debug(f"Resetting price band with threshold value {threshold}.")
         upper = price * (1 + threshold / 10000)
         lower = price * (1 - threshold / 10000)
@@ -32,7 +34,10 @@ def run(instrument: Investing, send_message: SendText, lower: float, upper: floa
     return (lower, upper)
 
 
-@click.command(context_settings=dict(help_option_names=["-h", "--help"]), options_metavar="[options...]")
+@click.command(
+    context_settings=dict(help_option_names=["-h", "--help"]),
+    options_metavar="[options...]",
+)
 @click.argument("to_num", metavar="[to number]")
 @click.argument("from_num", metavar="[from number]")
 @click.argument("market", metavar="[market]")
@@ -43,9 +48,15 @@ def run(instrument: Investing, send_message: SendText, lower: float, upper: floa
     "--threshold", "-t", help="Threshold in bps.", default=100.0, show_default=True
 )
 @click.option(
-    "--interval", "-i", help="Interval to perform check (mins).", default=1.0, show_default=True
+    "--interval",
+    "-i",
+    help="Interval to perform check (mins).",
+    default=1.0,
+    show_default=True,
 )
-@click.option("--sub-market", "-m", help="E.g. crypto is market and bitcoin is sub market.")
+@click.option(
+    "--sub-market", "-m", help="E.g. crypto is market and bitcoin is sub market."
+)
 @click.option("--debug", "-d", is_flag=True, help="Print debug messages.")
 def main(
     to_num,
@@ -88,9 +99,14 @@ def main(
 
 if __name__ == "__main__":
     log_handler = logging.StreamHandler()
-    log_handler.setFormatter(logging.Formatter("%(asctime)s [%(levelname)5s] %(funcName)4s() - %(message)s", "%Y-%m-%d %H:%M:%S"))
+    log_handler.setFormatter(
+        logging.Formatter(
+            "%(asctime)s [%(levelname)5s] %(funcName)4s() - %(message)s",
+            "%Y-%m-%d %H:%M:%S",
+        )
+    )
     logger = logging.getLogger(__name__)
     logger.addHandler(log_handler)
     logger.setLevel(logging.INFO)
- 
+
     main()

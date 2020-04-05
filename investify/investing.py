@@ -1,5 +1,4 @@
 import requests
-
 from lxml import html
 from requests import RequestException
 

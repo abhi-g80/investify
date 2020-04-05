@@ -16,7 +16,7 @@ def test_contract_name(get_instrument):
 def test_fetch_page(get_instrument):
     get_instrument.fetch()
 
-    assert get_instrument.ok == True
+    assert get_instrument.ok is True
 
 
 def test_page(get_instrument):
