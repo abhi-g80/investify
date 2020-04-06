@@ -3,6 +3,11 @@
 Utility tool which scrapes investing.com website for price updates and send whatsapp notification if it breaches a predefined threshold.
 
 
+## Installation
+
+    $ pip install investify
+
+
 ## Setup
 
 You can clone the project and simply run the script. You need to have a [twilio](https://www.twilio.com/) account (a free one would do as well). Setup your whatsapp dashboard in twilio first and use that numbers in the script. For the authentication export your Account SSID and Authentication token as follows :-
