@@ -1,12 +1,38 @@
 import logging
+import os
 import sys
 import time
 
 import click
-from investing import Investing
-from sendtext import SendText
 
-__version__ = "0.0.3"
+from .investing import Investing
+from .sendtext import SendText
+
+__version__ = "0.0.4"
+
+
+def setup_logging():
+    """Create a basic console based logger object.
+
+    Args:
+        None
+
+    Returns:
+        logger (logging.logger): Logger object.
+
+    """
+    log_handler = logging.StreamHandler()
+    log_handler.setFormatter(
+        logging.Formatter(
+            "%(asctime)s [%(levelname)5s] %(funcName)4s() - %(message)s",
+            "%Y-%m-%d %H:%M:%S",
+        )
+    )
+    logger = logging.getLogger(__name__)
+    logger.addHandler(log_handler)
+    logger.setLevel(logging.INFO)
+
+    return logger
 
 
 def run(
@@ -63,18 +89,28 @@ def main(
     from_num,
     interval,
     threshold,
+    debug=None,
     symbol=None,
     market=None,
     contract=None,
     priceband=None,
     sub_market=None,
-    debug=None,
 ):
     """Utiltiy script to notify if instrument price fluctuates out of price band.
     """
+
+    global logger
+    logger = setup_logging()
+
     if debug:
         logger.setLevel(logging.DEBUG)
-        logger.debug("Logging set to debug")
+        logger.debug("Logging set to debug.")
+
+    if ("TWILIO_AUTH_TOKEN" in os.environ) and ("TWILIO_ACCOUNT_SID" in os.environ):
+        pass
+    else:
+        logger.error("TWILIO_AUTH_TOKEN and/or TWILIO_ACCOUNT_SID not defined.")
+        sys.exit(1)
 
     lower, upper = list(map(float, priceband.split("-")))
 
@@ -98,15 +134,4 @@ def main(
 
 
 if __name__ == "__main__":
-    log_handler = logging.StreamHandler()
-    log_handler.setFormatter(
-        logging.Formatter(
-            "%(asctime)s [%(levelname)5s] %(funcName)4s() - %(message)s",
-            "%Y-%m-%d %H:%M:%S",
-        )
-    )
-    logger = logging.getLogger(__name__)
-    logger.addHandler(log_handler)
-    logger.setLevel(logging.INFO)
-
     main()
