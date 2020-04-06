@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "investify"
-version = "0.0.3"
+version = "0.0.4"
 description = "Get automated price alert based on investing.com prices"
 authors = ["Abhishek Guha <abhi.workspace@gmail.com>"]
 license = "MIT"
