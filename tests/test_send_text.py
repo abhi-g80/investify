@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from investify.sendtext import SendText
 
@@ -5,6 +7,11 @@ from investify.sendtext import SendText
 @pytest.fixture
 def send_text():
     return SendText("+123456789", "+3123456789")
+
+
+def test_twilio_environment_variables():
+    assert "TWILIO_ACCOUNT_SID" in os.environ
+    assert "TWILIO_AUTH_TOKEN" in os.environ
 
 
 def test_send_number(send_text):

@@ -62,3 +62,11 @@ Help menu for the tool.
       -h, --help             Show this message and exit.
 
 `to number` should be your whatsapp number whereas `from number` should the number given by Twilio to be used for your whatsapp sandbox. You can consult official Twilio for whatsapp [page](https://www.twilio.com/docs/whatsapp/api).
+
+
+## Test
+
+Remember to export twilio environment variables before running the tests.
+
+    $ cd <project dir>/investify
+    $ py.tests tests
